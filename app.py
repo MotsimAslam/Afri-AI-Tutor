@@ -1,5 +1,5 @@
 import streamlit as st
-from openai import OpenAI
+import openai
 from elevenlabs.client import ElevenLabs
 from stability_sdk import client
 import stability_sdk.interfaces.gooseai.generation.generation_pb2 as generation
@@ -24,7 +24,7 @@ ADMIN_PASS = st.secrets["ADMIN_PASS"]
 @st.cache_resource
 def initialize_apis():
     base_url = "https://api.aimlapi.com/v1"  # AIML API endpoint
-    api = OpenAI(api_key=AIML_API_KEY, base_url=base_url)
+    api = openai.OpenAI(api_key=AIML_API_KEY, base_url=base_url)
     elevenlabs_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
     stability_client = client.StabilityInference(
         key=STABILITY_KEY,
@@ -106,7 +106,7 @@ selected_voice = st.sidebar.selectbox(
 )
 
 # --- System Prompt for AI Tutor ---
-SYSTEM_PROMPT = f"""
+system_prompt = f"""
 You are a friendly tutor for African students. Follow these rules:
 1. Respond in {st.session_state.language}
 2. Use examples from local culture (markets, farming, traditions)
@@ -173,7 +173,7 @@ if selected_tab == "Home":
                 completion = api.chat.completions.create(
                     model="mistralai/Mistral-7B-Instruct-v0.2",  # Use the correct model name
                     messages=[
-                        {"role": "system", "content": SYSTEM_PROMPT},
+                        {"role": "system", "content": system_prompt},
                         {"role": "user", "content": prompt},
                     ],
                     temperature=0.7,
