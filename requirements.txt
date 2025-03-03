@@ -1,6 +1,8 @@
 streamlit
-openai
-pandas==2.1.1
-elevenlabs==0.2.21
-stability-sdk==0.4.0
-python-dotenv==1.0.0
+openai>=1.0.0
+pandas
+elevenlabs
+stability-sdk
+python-dotenv
+transformers
+torch
